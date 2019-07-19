@@ -37,29 +37,64 @@ it('renders without error', () => {
   const appWrapper = findByTestAttr(wrapper,'component-app');
   expect(appWrapper.length).toBe(1);
 });
-it('renders increment button', () => {
-  const wrapper = setup();
-  const button = findByTestAttr(wrapper, 'increment-button');
-  expect(button.length).toBe(1);
-});
 it('renders counter display', () => {
   const wrapper = setup();
   const counterDisplay = findByTestAttr(wrapper, 'counter-display');
   expect(counterDisplay.length).toBe(1);
+});
+it('should not render alert message', () => {
+  const wrapper = setup();
+  const alertMsg = findByTestAttr(wrapper, 'alert-msg');
+  expect(alertMsg.length).toBe(0);
 });
 it('counter starts with 0', () => {
   const wrapper = setup();
   const initialCounterState = wrapper.state('counter');
   expect(initialCounterState).toBe(0);
 });
-it('clicking button increments counter display', () => {
-  const counter = 7;
-  const wrapper = setup({ state: { counter } });
 
-  const button = findByTestAttr(wrapper, 'increment-button');
-  button.simulate('click');
-  wrapper.update();
+describe('Increment', () => {
+  it('renders increment button', () => {
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, 'increment-button');
+    expect(button.length).toBe(1);
+  });
+  it('clicking button increments counter display', () => {
+    const counter = 7;
+    const wrapper = setup({ state: { counter } });
 
-  const counterDisplay = findByTestAttr(wrapper, 'counter-display');
-  expect(counterDisplay.text()).toContain(counter + 1);
-});
+    const button = findByTestAttr(wrapper, 'increment-button');
+    button.simulate('click');
+    wrapper.update();
+
+    const counterDisplay = findByTestAttr(wrapper, 'counter-display');
+    expect(counterDisplay.text()).toContain(counter + 1);
+  });
+})
+describe('Decrement', () => {
+  it('renders decrement button', () => {
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, 'decrement-button');
+    expect(button.length).toBe(1);
+  });
+  it('clicking the decrement decrements button counter display', () => {
+    const counter = 6;
+    const wrapper = setup({ state: { counter }});
+
+    const button = findByTestAttr(wrapper, 'decrement-button');
+    button.simulate('click');
+    wrapper.update();
+
+    const counterDisplay = findByTestAttr(wrapper, 'counter-display');
+    expect(counterDisplay.text()).toContain(counter - 1)
+  })
+  it('clicking the decrement button on counter zero shows alert message', () => {
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, 'decrement-button');
+    button.simulate('click');
+    wrapper.update();
+
+    const alertMsg = findByTestAttr(wrapper, 'alert-msg');
+    expect(alertMsg.length).toBe(1);
+  });
+})
