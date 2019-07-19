@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 
 class App extends Component {
-  state = {
-    counter: 0
+  constructor(props){
+    super(props);
+    this.state = {
+      counter: 0
+    }
   }
 
   incrementCounter = () => {

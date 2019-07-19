@@ -3,6 +3,7 @@ import Enzyme, { shallow} from 'enzyme';
 import EnzymeAdapter from 'enzyme-adapter-react-16';
 
 import App from './App';
+import { wrap } from 'module';
 
 Enzyme.configure(({ adapter: new EnzymeAdapter }));
 
@@ -44,7 +45,9 @@ it('renders counter display', () => {
   expect(counterDisplay.length).toBe(1);
 });
 it('counter starts with 0', () => {
-
+  const wrapper = setup();
+  const initialCounterState = wrapper.state('counter');
+  expect(initialCounterState).toBe(0);
 });
 it('clicking button increments counter display', () => {
 
